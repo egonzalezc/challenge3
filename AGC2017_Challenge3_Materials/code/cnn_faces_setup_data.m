@@ -1,7 +1,7 @@
 function [imdb] = cnn_faces_setup_data()
 
 datadir = fullfile('..','data', 'faces_data' );
-totalSamples = 303; 
+totalSamples = 7883; 
 image_size = [224 224]; 
 
 imdb.images.data   = zeros(image_size(1), image_size(2), 3, totalSamples, 'single');
@@ -54,14 +54,8 @@ for s = 1:length(imdb.meta.sets)
             %Change
             imDouble(:,:,:,sample) = im2 ;
             labels(sample) = label ;
-            %
-%             if saved < train
-%                 set(sample) = 1;
-%             else
-%                 set(sample) = 2;
-%             end
+
             set(sample) = s;
-%             saved = saved + 1;
             sample = sample + 1 ;
         end
     end
