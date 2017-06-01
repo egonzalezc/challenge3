@@ -1,1 +1,14 @@
 # challenge3
+-AGC2017_Challenge3_Materials
+  -code
+  -data
+    -faces_data
+    -all_data_set (This is only the originals images given in the challenge)
+    -faces_data
+      -test (the cropped one)
+      -train (the cropped one)
+  -output
+    -imdb
+    -models
+  -pre_trained
+-matconvnet-1.0-beta24
