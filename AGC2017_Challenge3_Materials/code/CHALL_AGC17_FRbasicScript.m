@@ -24,10 +24,11 @@ total_time = 0;
 % load myFaceRecognitionModel
 run(fullfile('../../', 'matconvnet-1.0-beta24', 'matlab', 'vl_setupnn.m')) ;
 
-my_FRmodel = load(fullfile('..', 'output', 'models', 'net-30-faces-May.mat'));
+my_FRmodel = load(fullfile('..', 'output', 'models', 'net-1-June-2.mat'));
 my_FRmodel.layers{end}.type = 'softmax';
 my_FRmodel = vl_simplenn_tidy(my_FRmodel) ;
-
+failed = zeros(600,4);
+idx=1;
 % Process all images in the Training set
 for j = 1 : length( AGC17_Challenge3_TRAINING )
     A = imread( sprintf('%s%s',...
@@ -53,9 +54,10 @@ for j = 1 : length( AGC17_Challenge3_TRAINING )
         %
         faces = face_detection(A);
         autom_id=-1;
+        score=0;
         for f=1:size(faces, 1)
             faceImg = A(faces(f,2):faces(f,4), faces(f,1):faces(f,3),:);
-            autom_id = my_face_recognition_function(faceImg, my_FRmodel);        
+            [autom_id, score] = my_face_recognition_function(faceImg, my_FRmodel);        
         end
         % ###############################################################
         
@@ -70,6 +72,11 @@ for j = 1 : length( AGC17_Challenge3_TRAINING )
     %end
 
     % Store the detection(s) in the resulst structure
+    if autom_id ~=  AGC17_Challenge3_TRAINING(j).id
+        %id, true, prediction
+        failed(idx,:) = [j, AGC17_Challenge3_TRAINING(j).id ,autom_id, score];
+        idx = idx+1;
+    end
     AutoRecognSTR(j).id = autom_id;
 end
    

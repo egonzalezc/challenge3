@@ -2,24 +2,24 @@ function [net, info] = cnn_faces_main()
 
 run(fullfile('../../', 'matconvnet-1.0-beta24', 'matlab', 'vl_setupnn.m')) ;
 
-pretrainedmodelName = 'imagenet-vgg-s';
+pretrainedmodelName = 'imagenet-vgg-f.mat';
 opts.expDir = fullfile('..', 'output') ;
-imdbPath = fullfile(opts.expDir, 'imdb', 'imdb_faces.mat');
-newModelPath = fullfile(opts.expDir, 'models', 'net-31-faces-May.mat');
-opts.batchSize = 50 ;
+imdbPath = fullfile(opts.expDir, 'imdb', 'vgg-face.mat');
+newModelPath = fullfile(opts.expDir, 'models', 'net-2-June-Wil.mat');
+opts.batchSize = 80 ;
 opts.learningRate = 0.0001 ;
-opts.numEpochs = 2 ;
+opts.numEpochs = 25 ;
 opts.continue = false ;
 
 %%  Preparing Data
 
-if exist(imdbPath, 'file')
-  imdb = load(imdbPath) ;
-else
+% if exist(imdbPath, 'file')
+%   imdb = load(imdbPath) ;
+% else
   imdb = cnn_faces_setup_data();
-  mkdir(opts.expDir) ;
-  save(imdbPath, '-struct', 'imdb') ;
-end
+%   mkdir(opts.expDir) ;
+%   save(imdbPath, '-struct', 'imdb', '-v7.3') ;
+% end
 
 %% Load pre trained model
 net = cnn_faces_init(pretrainedmodelName);

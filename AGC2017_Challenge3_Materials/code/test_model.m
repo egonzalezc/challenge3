@@ -1,27 +1,28 @@
 function best = test_model()
-HOME_PATH = '/Users/esthergonzalez/Desktop/MIIS/FaceAndGestureRecognition/Challenge3/AGC2017_Challenge3_Materials/';
-net = load(fullfile(HOME_PATH, 'output', 'net-30-faces-May.mat'));
+net = load(fullfile('..', 'output','models', 'net-1-June-4.mat'));
 net.layers{end}.type = 'softmax';
-% im = imread(fullfile(HOME_PATH,'data','faces_data', 'test', 'livingroom', 'image_0004.jpg' ));
 net = vl_simplenn_tidy(net) ;% run(fullfile(HOME_PATH, 'matconvnet-1.0-beta24' ,'matlab', 'vl_setupnn.m')) ;
-classes = {'1', '2', '5'};
+% for c=1:80
+%     classes{c}=num2str(c);
+% end
+
+classes={'9', '25', '28', '30'};
 
 good = 0;
 bad = 0;
 total = 0;
 for class=1:length(classes)
-   folderName = fullfile(HOME_PATH,'data', 'faces_data','test', classes{class}, '/');
+   folderName = fullfile('..','data', 'only_original_cropped_faces', classes{class}, '/');
    imagefiles = dir(strcat(folderName,'*.jp*'));
    nimages = length(imagefiles);
    for i=1:nimages
         filename = strcat(folderName, imagefiles(i).name);
         im = imread(filename);
-        im_ = single(im) ; % note: 255 range
+        im_ = single(im) ;
         im_ = imresize(im_, net.meta.normalization.imageSize(1:2)) ;
         im_ = bsxfun(@minus,im_,net.meta.normalization.averageImage) ;
         res = vl_simplenn(net, im_) ;
 
-        % Show the classification result.
         scores = squeeze(gather(res(end).x)) ;
         [bestScore, best] = max(scores) ;
         if best == class && bestScore >0.5

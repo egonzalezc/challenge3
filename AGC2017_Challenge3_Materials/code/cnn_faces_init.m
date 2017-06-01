@@ -3,15 +3,15 @@ net = load(fullfile('..' , 'pre_trained', pretrainedmodelName));
 
 f=1/100;
 
-net.layers{end}={};
-net.layers{end-1}={};
-
-net.layers{end-1} = net.layers{end-2}; %%lower the layer of fc7 to insert a dropout layer before it
-net.layers{end-2} = net.layers{end-3}; %%lower the layer of fc7 to insert a dropout layer before it
-
-net.layers{end-3} = struct('type','dropout','rate',0.3);
-
-net.layers{end} = struct('type','dropout','rate',0.3); %% the dropout between fc7 & fc8
+% net.layers{end}={};
+% net.layers{end-1}={};
+% 
+% net.layers{end-1} = net.layers{end-2}; %%lower the layer of fc7 to insert a dropout layer before it
+% net.layers{end-2} = net.layers{end-3}; %%lower the layer of fc7 to insert a dropout layer before it
+% 
+% net.layers{end-3} = struct('type','dropout','rate',0.3);
+% 
+% net.layers{end} = struct('type','dropout','rate',0.3); %% the dropout between fc7 & fc8
 
 net.layers = net.layers(1:end-2);
 net.layers{end+1} = struct('type', 'conv', ...

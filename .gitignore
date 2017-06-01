@@ -1,0 +1,5 @@
+*.jpg
+*.jpeg
+*.png
+*.gif
+matconvnet-1.0-beta24/*

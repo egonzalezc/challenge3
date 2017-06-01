@@ -24,7 +24,7 @@ function [coordinates] =  MyFaceDetectionFunction(image)
     actual_faces = 0;
     models = {'FrontalFaceCART', 'FrontalFaceLBP', 'ProfileFace'};
     m=1;
-    while actual_faces==0 && m<size(models,2)
+    while actual_faces==0 && m<=size(models,2)
         faceDetector = vision.CascadeObjectDetector(models{m});
         faceBbox = step(faceDetector, image);
         for i=1:size(faceBbox,1)
